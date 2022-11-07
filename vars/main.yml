@@ -210,7 +210,7 @@ registry_defaults_notifications: {}
 #     - name: alistener
 #       disabled: false
 #       url: https://my.listener.com/event
-#       headers: <http.Header>
+#       headers: [<http.Header>]
 #       timeout: 1s
 #       threshold: 10
 #       backoff: 1s
@@ -236,11 +236,11 @@ registry_defaults_redis: {}
 #   tls:
 #     enabled: false
 
-registry_defaults_health: {}
-#   storagedriver:
-#     enabled: true
-#     interval: 10s
-#     threshold: 3
+registry_defaults_health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
 #   file:
 #     - file: /path/to/checked/file
 #       interval: 10s

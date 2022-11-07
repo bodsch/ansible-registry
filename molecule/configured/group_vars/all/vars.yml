@@ -45,10 +45,29 @@ registry_redis:
   tls:
     enabled: false
 
-# registry_auth:
-#   htpasswd:
-#     realm: basic-realm
-#     # only bcrypt supported!
-#     path: /etc/docker/registry/.registry-passwdfile
+
+registry_notifications:
+  events:
+    includereferences: true
+  endpoints:
+    - name: alistener
+      disabled: false
+      url: http://127.0.0.1:8080/api/events
+      # headers: <http.Header>
+      headers:
+        Content-Type:
+          - application/json
+        Authorization:
+          - "Bearer 74RwH03rOPh8kTnIgcCqAWhgV3cGMAuz"
+      timeout: 1s
+      threshold: 10
+      backoff: 10s
+      ignoredmediatypes:
+        - application/octet-stream
+      ignore:
+        mediatypes:
+           - application/octet-stream
+        actions:
+           - pull
 
 ...

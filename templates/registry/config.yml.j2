@@ -122,22 +122,80 @@ reporting:
 {% endif -%}
 
 {# https://github.com/distribution/distribution/blob/main/docs/configuration.md#http #}
-{%- if registry_http is defined and registry_http | count > 0 %}
+{% if registry_http is defined and registry_http | count > 0 %}
 http:
   {{ registry_http | to_nice_yaml(indent=2,sort_keys=False) | indent(2, False) }}
-{% endif -%}
+{% endif %}
 
 {# https://github.com/distribution/distribution/blob/main/docs/configuration.md#notifications #}
-{%- if registry_notifications is defined and registry_notifications | count > 0 %}
+{% if registry_notifications is defined %}
 notifications:
-  {{ registry_notifications | to_nice_yaml(indent=2,sort_keys=False) | indent(2, False) }}
-{% endif -%}
+  {# registry_notifications | to_nice_yaml(indent=2,sort_keys=False) | indent(2, False) #}
+  {% if registry_notifications.events is defined and
+        registry_notifications.events.includereferences is defined and
+        registry_notifications.events.includereferences | string | length > 0 %}
+  events:
+    includereferences: {{ registry_notifications.events.includereferences | bool | ternary('true', 'false') }}
+  {% endif %}
+  {% if registry_notifications.endpoints is defined and
+        registry_notifications.endpoints | count > 0 %}
+  endpoints:
+    {% for e in registry_notifications.endpoints %}
+    - name: {{ e.name }}
+      {% if e.disabled is defined %}
+      disabled: {{ e.disabled | bool | ternary('true', 'false') }}
+      {% endif %}
+      {% if e.url is defined and e.url | string | length > 0 %}
+      url: {{ e.url }}
+      {% endif %}
+      {% if e.headers is defined and e.headers | count > 0 %}
+      headers:
+        {% for k, v in e.headers.items() %}
+        {{ k }}:
+          {% for xx in v %}
+          - {{ xx }}
+          {% endfor %}
+        {% endfor %}
+      {% endif %}
+      {% if e.timeout is defined and e.timeout | string | length > 0 %}
+      timeout: {{ e.timeout }}
+      {% endif %}
+      {% if e.threshold is defined and e.threshold | string | length > 0 %}
+      threshold: {{ e.threshold }}
+      {% endif %}
+      {% if e.backoff is defined and e.backoff | string | length > 0 %}
+      backoff: {{ e.backoff }}
+      {% endif %}
+      {% if e.ignoredmediatypes is defined and e.ignoredmediatypes | count > 0 %}
+      ignoredmediatypes:
+        {% for i in e.ignoredmediatypes %}
+        - {{ i }}
+        {% endfor %}
+      {% endif %}
+      {% if e.ignore is defined and e.ignore | count > 0 %}
+      ignore:
+        {% if e.ignore.mediatypes is defined and e.ignore.mediatypes | count > 0 %}
+        mediatypes:
+          {% for i in e.ignore.mediatypes %}
+          - {{ i }}
+          {% endfor %}
+        {% endif %}
+        {% if e.ignore.actions is defined and e.ignore.actions | count > 0 %}
+        actions:
+          {% for i in e.ignore.actions %}
+          - {{ i }}
+          {% endfor %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endif %}
 
 {# https://github.com/distribution/distribution/blob/main/docs/configuration.md#redis #}
 {%- if registry_redis is defined and registry_redis | count > 0 %}
 redis:
   {{ registry_redis | to_nice_yaml(indent=2,sort_keys=False) | indent(2, False) }}
-{% endif -%}
+{% endif %}
 
 {# https://github.com/distribution/distribution/blob/main/docs/configuration.md#health #}
 {%- if registry_health is defined and registry_health | count > 0 %}

@@ -1,25 +1,26 @@
 ---
 
 - name: define checksum
+  delegate_to: localhost
+  run_once: "{{ 'false' if registry_direct_download else 'true' }}"
   block:
     - name: get checksum list
-      set_fact:
+      ansible.builtin.set_fact:
         __registry_checksums: "{{ lookup('url', registry_checksum_url, wantlist=True) | list }}"
       run_once: true
 
     - name: get checksum for {{ system_architecture }} architecture
-      set_fact:
+      ansible.builtin.set_fact:
         __registry_checksum: "{{ __registry_checksums[0] }}"
-  delegate_to: localhost
 
 - name: download registry binary archive
   become: false
   delegate_to: "{{ registry_delegate_to }}"
-  run_once: "{{ 'false' if registry_direct_download else 'true' }}"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ registry_release_download_url }}/download/v{{ registry_version }}/registry_{{ registry_version }}_{{ ansible_facts.system }}_{{ system_architecture }}.tar.gz"
     dest: "{{ registry_local_tmp_directory }}/registry-{{ system_architecture }}.tar.gz"
     checksum: "sha256:{{ __registry_checksum }}"
+    mode: 0660
   register: _download_archive
   until: _download_archive is succeeded
   retries: 5
@@ -30,7 +31,7 @@
   become: false
   delegate_to: "{{ registry_delegate_to }}"
   run_once: "{{ 'false' if registry_direct_download else 'true' }}"
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ registry_local_tmp_directory }}/registry-{{ system_architecture }}.tar.gz"
     dest: "{{ registry_local_tmp_directory }}"
     copy: false

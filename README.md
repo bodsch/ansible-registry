@@ -3,14 +3,15 @@
 
 Ansible role to install and configure docker [registry](https://github.com/distribution/distribution).
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bodsch/ansible-registry/CI)][ci]
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bodsch/ansible-registry/main.yml?branch=main)][ci]
 [![GitHub issues](https://img.shields.io/github/issues/bodsch/ansible-registry)][issues]
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/bodsch/ansible-registry)][releases]
+[![Ansible Quality Score](https://img.shields.io/ansible/quality/50067?label=role%20quality)][quality]
 
 [ci]: https://github.com/bodsch/ansible-registry/actions
 [issues]: https://github.com/bodsch/ansible-registry/issues?q=is%3Aopen+is%3Aissue
 [releases]: https://github.com/bodsch/ansible-registry/releases
-
+[quality]: https://galaxy.ansible.com/bodsch/registry
 
 If `latest` is set for `registry_version`, the role tries to install the latest release version.  
 **Please use this with caution, as incompatibilities between releases may occur!**
@@ -48,9 +49,30 @@ If you want to use something stable, please use a [Tagged Version](https://githu
 ## Configuration
 
 ```yaml
+registry_version: 2.8.1
 
+registry_release_download_url: https://github.com/distribution/distribution/releases
+
+registry_system_user: registry
+registry_system_group: registry
+registry_config_dir: /etc/docker/registry
+
+registry_direct_download: false
+
+registry_service: {}
+registry_log: {}
+registry_storage: {}
+registry_auth: {}
+registry_middleware: {}
+registry_reporting: {}
+registry_http: {}
+registry_notifications: {}
+registry_redis: {}
+registry_health: {}
+registry_proxy: {}
+registry_compatibility: {}
+registry_validation: {}
 ```
-
 
 ### `registry_log`
 

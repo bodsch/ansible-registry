@@ -1,7 +1,7 @@
 ---
 
 - name: create registry configuration directory
-  file:
+  ansible.builtin.file:
     path: "{{ registry_config_dir }}"
     state: directory
     owner: root
@@ -9,7 +9,7 @@
     mode: 0775
 
 - name: create config.yml
-  template:
+  ansible.builtin.template:
     src: "registry/config.yml.j2"
     dest: "{{ registry_config_dir }}/config.yml"
     force: true
@@ -21,6 +21,6 @@
     - reload registry
 
 - name: restart registry if needed
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 ...

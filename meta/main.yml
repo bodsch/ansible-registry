@@ -5,9 +5,9 @@ galaxy_info:
   namespace: bodsch
 
   author: Bodo Schulz
-  description: ansible role to setup registry
+  description: ansible role to setup "the" docker registry
   license: Apache
-  min_ansible_version: 2.10
+  min_ansible_version: "2.10"
 
   platforms:
     - name: ArchLinux
@@ -20,8 +20,7 @@ galaxy_info:
 
   galaxy_tags:
     - registry
-    - ldap
-    - authentication
+    - docker
 
 dependencies: []
 

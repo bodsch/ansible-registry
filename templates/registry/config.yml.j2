@@ -11,7 +11,7 @@ log:
         registry_log.accesslog | count > 0 %}
   accesslog:
     {% if registry_log.accesslog.disabled is defined %}
-    disabled: {{ registry_log.accesslog.disabled | bool | ternary('true', 'false') }}
+    disabled: {{ registry_log.accesslog.disabled | bool | bodsch.core.config_bool(true_as='true', false_as='false') }}
     {% endif %}
   {% endif %}
   {% if registry_log.level is defined and
@@ -87,7 +87,7 @@ storage:
   {% if registry_storage.redirect is defined and
         registry_storage.redirect.disable is defined %}
   redirect:
-    disable: {{ registry_storage.redirect.disable | bool | ternary('true', 'false') }}
+    disable: {{ registry_storage.redirect.disable | bool | bodsch.core.config_bool(true_as='true', false_as='false') }}
   {% endif %}
 {% endif -%}
 
@@ -135,7 +135,7 @@ notifications:
         registry_notifications.events.includereferences is defined and
         registry_notifications.events.includereferences | string | length > 0 %}
   events:
-    includereferences: {{ registry_notifications.events.includereferences | bool | ternary('true', 'false') }}
+    includereferences: {{ registry_notifications.events.includereferences | bool | bodsch.core.config_bool(true_as='true', false_as='false') }}
   {% endif %}
   {% if registry_notifications.endpoints is defined and
         registry_notifications.endpoints | count > 0 %}
@@ -143,7 +143,7 @@ notifications:
     {% for e in registry_notifications.endpoints %}
     - name: {{ e.name }}
       {% if e.disabled is defined %}
-      disabled: {{ e.disabled | bool | ternary('true', 'false') }}
+      disabled: {{ e.disabled | bool | bodsch.core.config_bool(true_as='true', false_as='false') }}
       {% endif %}
       {% if e.url is defined and e.url | string | length > 0 %}
       url: {{ e.url }}

@@ -42,9 +42,6 @@
   gather_facts: true
 
   roles:
-    - role: syslog-ng
-    - role: snakeoil
     - role: redis
-    - role: nginx
 
 ...

@@ -45,7 +45,6 @@ registry_redis:
   tls:
     enabled: false
 
-
 registry_notifications:
   events:
     includereferences: true

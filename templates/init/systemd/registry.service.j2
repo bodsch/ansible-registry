@@ -18,6 +18,8 @@ ExecStart        = /usr/bin/registry $OPTIONS
 LimitNOFILE      = 65000
 SyslogIdentifier = registry
 Restart          = on-failure
+RestartSec       = 30s
+RestartSteps     = 20
 
 [Install]
 WantedBy         = multi-user.target

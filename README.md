@@ -1,6 +1,15 @@
 
 # Ansible Role:  `registry` 
 
+---
+
+> I have transferred this role to its own [collection](https://github.com/bodsch/ansible-collection-docker).  
+> In future, I will not accept or process any further pull requests or issues here.
+>
+> **Please use the linked collection from now on!**
+
+---
+
 Ansible role to install and configure docker [registry](https://github.com/distribution/distribution).
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bodsch/ansible-registry/main.yml?branch=main)][ci]
